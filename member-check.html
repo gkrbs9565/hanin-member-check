@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>회원 인증</title>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <style>
+      body {
+        font: 16px/1.6 system-ui, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        background: #f7f7f8;
+      }
+      .card {
+        background: #fff;
+        padding: 28px;
+        border-radius: 18px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        max-width: 400px;
+      }
+      .title {
+        font-size: 35px;
+        font-weight: 900;
+        margin-bottom: -10px;
+      }
+      .desc {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 100px;
+      }
+      .badge {
+        padding: 20px 16px;
+
+        text-align: center;
+
+        display: inline-block;
+
+        border-radius: 20px;
+        font-weight: 700;
+      }      
+      .ok {
+        background: #e9f9ee;
+      }
+      .warn {
+        background: #fff5e6;
+      }
+      .err {
+        background: #fde8ec;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <p class="title">회원 인증</p>
+      <p class="desc">QR 코드를 통해 정회원 여부를 확인합니다.</p>
+      <div id="result" class="badge">확인 중...</div>
+    </div>
+
+    <script defer>
+      const supabaseUrl = "https://vaqanguaryrdpuhkbaqa.supabase.co"; // 네 프로젝트 URL
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZhcWFuZ3VhcnlyZHB1aGtiYXFhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjE1ODkzNzEsImV4cCI6MjA3NzE2NTM3MX0.bCB045autSTUvgSzh9s_OI-wbPoFJBBksvyb_kGjObU"; // anon 키 (조회용)
+      const token = new URLSearchParams(location.search).get("token");
+
+      async function run() {
+        const el = document.getElementById("result");
+        if (!token) {
+          el.textContent = "토큰이 없습니다.";
+          el.className = "badge err";
+          return;
+        }
+        await new Promise((r) => {
+          if (window.supabase) return r();
+          const t = setInterval(() => {
+            if (window.supabase) {
+              clearInterval(t);
+              r();
+            }
+          }, 20);
+        });
+        const client = supabase.createClient(supabaseUrl, supabaseKey);
+        const { data, error } = await client
+          .from("member_public")
+          .select("is_regular")
+          .eq("public_token", token)
+          .maybeSingle();
+        if (error) {
+          el.textContent = "오류 발생";
+          el.className = "badge err";
+          return;
+        }
+        if (!data) {
+          el.textContent = "등록되지 않은 회원입니다.";
+          el.className = "badge warn";
+          return;
+        }
+        if (data.is_regular) {
+          el.textContent = "정회원입니다.";
+          el.className = "badge ok";
+        } else {
+          el.textContent = "일반회원입니다.";
+          el.className = "badge warn";
+        }
+      }
+      run();
+    </script>
+  </body>
+</html>
