@@ -1,17 +1,115 @@
-<!doctype html>
-<meta charset="utf-8">
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>회원 안내</title>
 <style>
-  body{font:16px/1.6 system-ui,sans-serif;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#f7f7f8}
-  .card{background:#fff;padding:28px;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.1);text-align:center;max-width:480px}
-  .txt{font-size:22px;font-weight:700}
+  body {
+    font: 16px/1.6 system-ui, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+  }
+  header {
+    max-width: 494px;
+    width: 100%;
+    height: 50px;
+
+    position: fixed;
+    top: 20px;
+
+    border-bottom: 1px solid #ccc;
+  }
+  header img {
+    padding-left: 20px;
+    height: 2.4rem;
+  }
+  .content {
+    position: absolute;
+    top: 200px;
+  }
+  .card {
+    background: #fff;
+    padding: 28px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 480px;
+  }
+  .txt {
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .info {
+    max-width: 480px;
+    margin: 16px auto 24px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 16px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 4px;
+    border-bottom: 1px solid #f0f1f3;
+  }
+  .row:last-child {
+    border-bottom: none;
+  }
+  .label {
+    color: #8b8b8b;
+    font-weight: 600;
+  }
+  .value {
+    font-weight: 700;
+  }
 </style>
-<div class="card"><div id="msg" class="txt">로딩 중…</div></div>
+<header><img src="logo.png" alt="" /></header>
+
+<div class="content">
+  <h1>회원 인증 성공</h1>
+</div>
+
+<div class="info"></div>
+
 <script>
+  // URL 파라미터에서 값 읽기
   const qs = new URLSearchParams(location.search);
-  const name  = (qs.get("name")  || "").trim();
+  const nameKr = (qs.get("name_kr") || qs.get("name") || "").trim();
   const grade = (qs.get("grade") || "").trim();
-  const el = document.getElementById("msg");
-  if(!name || !grade){ el.textContent = "필요한 정보가 없습니다."; }
-  else { el.textContent = `${name}님 ${grade}`; }
+  const passportNo = (qs.get("passport_no") || qs.get("passport") || "").trim();
+  const passportName = (qs.get("passport_name") || "").trim();
+
+  // 표시할 행을 조건부로 생성
+  const rows = [];
+  if (nameKr)
+    rows.push(
+      `<div class="row"><div class="label">이름</div><div class="value">${nameKr}</div></div>`
+    );
+  if (passportName)
+    rows.push(
+      `<div class="row"><div class="label">Passport Name</div><div class="value">${passportName}</div></div>`
+    );
+  if (passportNo)
+    rows.push(
+      `<div class="row"><div class="label">Passport No</div><div class="value">${passportNo}</div></div>`
+    );
+  if (grade)
+    rows.push(
+      `<div class="row"><div class="label">멤버십 등급</div><div class="value">${grade}</div></div>`
+    );
+
+  // .info 영역에만 출력 (header, .content는 변경하지 않음)
+  const infoBox = document.querySelector(".info");
+  if (rows.length) {
+    infoBox.innerHTML = rows.join("");
+  } else {
+    infoBox.innerHTML =
+      '<div class="row"><div class="label">안내</div><div class="value">표시할 정보가 없습니다.</div></div>';
+  }
 </script>
