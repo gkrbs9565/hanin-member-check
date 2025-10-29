@@ -7,7 +7,7 @@
 
     <style>
       body {
-        font: 16px/1.6 system-ui, sans-serif;
+        font: 16px system-ui, sans-serif;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -36,7 +36,6 @@
         font-weight: bold;
       }
 
-      /* 추가: 이름/등급 상단 표시 */
       .member-summary {
         width: 340px;
         height: 50px;
@@ -96,50 +95,57 @@
     </style>
   </head>
   <body>
-    <header><img src="img/logo.png" alt="" /></header>
+    <header><img src="img/logo.png" alt=""/></header>
 
     <div class="content">
       <h1>회원 인증 성공</h1>
     </div>
 
-    <!-- 이름 / 등급 요약 -->
     <div class="member-summary">
+
       <div class="profile">
         <img src="img/profile.png" alt="" />
       </div>
+
       <div class="member_info">
         <div class="name" id="nameKrBox"></div>
         <div class="grade" id="gradeBox"></div>
       </div>
+
     </div>
 
     <div class="info">
+
       <div class="row">
         <div class="label">Name</div>
         <div class="value" id="passportNameBox"></div>
       </div>
+
       <div class="row">
         <div class="label">Passport No</div>
         <div class="value" id="passportNoBox"></div>
       </div>
+
     </div>
 
     <script>
       const qs = new URLSearchParams(location.search);
       const nameKr = (qs.get("name_kr") || qs.get("name") || "").trim();
       const grade = (qs.get("grade") || "").trim();
-      const passportNo = (qs.get("passport_no") || qs.get("passport") || "").trim();
+      const passportNo = (
+        qs.get("passport_no") ||
+        qs.get("passport") ||
+        ""
+      ).trim();
       const passportName = (qs.get("passport_name") || "").trim();
 
-      // 필수 정보(nameKr, grade) 누락 시 페이지 이동
-      if (!nameKr || !grade) {
+
+      if (grade = "정회원") {
         window.location.replace("NotMember.html");
       } else {
-        // 이름 / 등급 상단 표시
         document.getElementById("nameKrBox").textContent = nameKr;
         document.getElementById("gradeBox").textContent = grade;
 
-        // info 영역 값 주입
         document.getElementById("passportNameBox").textContent =
           passportName || "-";
         document.getElementById("passportNoBox").textContent =
