@@ -139,13 +139,14 @@
       ).trim();
       const passportName = (qs.get("passport_name") || "").trim();
 
-
-      if (grade = "정회원") {
+      if (!passportName || !grade || grade !== "정회원") {
         window.location.replace("NotMember.html");
       } else {
+        // 이름 / 등급 상단 표시
         document.getElementById("nameKrBox").textContent = nameKr;
         document.getElementById("gradeBox").textContent = grade;
 
+        // info 영역 값 주입
         document.getElementById("passportNameBox").textContent =
           passportName || "-";
         document.getElementById("passportNoBox").textContent =
