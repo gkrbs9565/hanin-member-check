@@ -1,116 +1,150 @@
 <!DOCTYPE html>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>회원 안내</title>
-<style>
-  body {
-    font: 16px/1.6 system-ui, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    margin: 0;
-  }
-  header {
-    max-width: 494px;
-    width: 100%;
-    height: 50px;
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>회원 안내</title>
 
-    position: fixed;
-    top: 20px;
+    <style>
+      body {
+        font: 16px/1.6 system-ui, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+      }
+      header {
+        max-width: 494px;
+        width: 100%;
+        height: 50px;
+        position: fixed;
+        top: 20px;
+        border-bottom: 1px solid #ccc;
+      }
+      header img {
+        padding-top: 5px;
+        padding-left: 20px;
+        height: 1.9rem;
+      }
+      .content {
+        margin-top: 120px;
+        margin-bottom: 50px;
+        text-align: center;
+      }
+      .content h1 {
+        font-size: 35px;
+        font-weight: bold;
+      }
 
-    border-bottom: 1px solid #ccc;
-  }
-  header img {
-    padding-left: 20px;
-    height: 2.4rem;
-  }
-  .content {
-    position: absolute;
-    top: 150px;
-  }
-  .card {
-    background: #fff;
-    padding: 28px;
-    border-radius: 18px;
-    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
-    text-align: center;
-    max-width: 480px;
-  }
-  .txt {
-    font-size: 22px;
-    font-weight: 700;
-  }
+      /* 추가: 이름/등급 상단 표시 */
+      .member-summary {
+        width: 340px;
+        height: 50px;
 
-  .info {
-    max-width: 500px;
-    margin: 16px auto 24px;
-    background: #fff;
-    border-radius: 16px;
-    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); */
-    border: 1px solid #ccc;
-    padding: 16px;
-  }
-  .row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 4px;
-    border-bottom: 1px solid #f0f1f3;
-  }
-  .row:last-child {
-    border-bottom: none;
-  }
-  .label {
-    color: #8b8b8b;
-    font-weight: 600;
-  }
-  .value {
-    font-weight: 700;
-  }
-</style>
-<header><img src="logo.png" alt="" /></header>
+        margin-bottom: 20px;
+        margin-top: 8px;
 
-<div class="content">
-  <h1>회원 인증 성공</h1>
-</div>
+        display: flex;
+        justify-content: left;
+        text-align: left;
 
-<div class="info"></div>
+        gap: 20px;
+      }
+      .member-summary .profile img {
+        width: 70px;
+      }
+      .member_info {
+        padding-top: 5px;
+      }
+      .member-summary .name {
+        font-size: 22px;
+        font-weight: 700;
+      }
+      .member-summary .grade {
+        font-size: 16px;
+        font-weight: 600;
+        color: #ec2027;
+      }
 
-<script>
-  // URL 파라미터에서 값 읽기
-  const qs = new URLSearchParams(location.search);
-  const nameKr = (qs.get("name_kr") || qs.get("name") || "").trim();
-  const grade = (qs.get("grade") || "").trim();
-  const passportNo = (qs.get("passport_no") || qs.get("passport") || "").trim();
-  const passportName = (qs.get("passport_name") || "").trim();
+      .info {
+        max-width: 600px;
+        margin: 24px auto;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        padding: 16px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 120px;
+        padding: 12px 4px;
+        border-bottom: 1px solid #f0f1f3;
+      }
+      .row:last-child {
+        border-bottom: none;
+      }
+      .label {
+        color: #8b8b8b;
+        font-weight: 600;
+      }
+      .value {
+        font-weight: 650;
+      }
+    </style>
+  </head>
+  <body>
+    <header><img src="img/logo.png" alt="" /></header>
 
-  // 표시할 행을 조건부로 생성
-  const rows = [];
-  if (nameKr)
-    rows.push(
-      `<div class="row"><div class="label">이름</div><div class="value">${nameKr}</div></div>`
-    );
-  if (passportName)
-    rows.push(
-      `<div class="row"><div class="label">Passport Name</div><div class="value">${passportName}</div></div>`
-    );
-  if (passportNo)
-    rows.push(
-      `<div class="row"><div class="label">Passport No</div><div class="value">${passportNo}</div></div>`
-    );
-  if (grade)
-    rows.push(
-      `<div class="row"><div class="label">멤버십 등급</div><div class="value">${grade}</div></div>`
-    );
+    <div class="content">
+      <h1>회원 인증 성공</h1>
+    </div>
 
-  // .info 영역에만 출력 (header, .content는 변경하지 않음)
-  const infoBox = document.querySelector(".info");
-  if (rows.length) {
-    infoBox.innerHTML = rows.join("");
-  } else {
-    infoBox.innerHTML =
-      '<div class="row"><div class="label">안내</div><div class="value">표시할 정보가 없습니다.</div></div>';
-  }
-</script>
+    <!-- 이름 / 등급 요약 -->
+    <div class="member-summary">
+      <div class="profile">
+        <img src="img/profile.png" alt="" />
+      </div>
+      <div class="member_info">
+        <div class="name" id="nameKrBox"></div>
+        <div class="grade" id="gradeBox"></div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="row">
+        <div class="label">Name</div>
+        <div class="value" id="passportNameBox"></div>
+      </div>
+      <div class="row">
+        <div class="label">Passport No</div>
+        <div class="value" id="passportNoBox"></div>
+      </div>
+    </div>
+
+    <script>
+      const qs = new URLSearchParams(location.search);
+      const nameKr = (qs.get("name_kr") || qs.get("name") || "").trim();
+      const grade = (qs.get("grade") || "").trim();
+      const passportNo = (qs.get("passport_no") || qs.get("passport") || "").trim();
+      const passportName = (qs.get("passport_name") || "").trim();
+
+      // 필수 정보(nameKr, grade) 누락 시 페이지 이동
+      if (!nameKr || !grade) {
+        window.location.replace("NotMember.html");
+      } else {
+        // 이름 / 등급 상단 표시
+        document.getElementById("nameKrBox").textContent = nameKr;
+        document.getElementById("gradeBox").textContent = grade;
+
+        // info 영역 값 주입
+        document.getElementById("passportNameBox").textContent =
+          passportName || "-";
+        document.getElementById("passportNoBox").textContent =
+          passportNo || "-";
+      }
+    </script>
+  </body>
+</html>
