@@ -152,6 +152,9 @@
         document.getElementById("passportNoBox").textContent =
           passportNo || "-";
       }
+      // 주소창에서 파라미터 제거 (히스토리 유지)
+      const cleanURL = location.origin + location.pathname + location.hash;
+      history.replaceState(null, "", cleanURL);
     </script>
   </body>
 </html>
